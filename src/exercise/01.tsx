@@ -1,14 +1,17 @@
 // useState: greeting
 // http://localhost:3000/isolated/exercise/01.js
 
-import React from 'react'
+import React, {useState} from 'react'
 
-function Greeting() {
-  // 💣 delete this variable declaration and replace it with a React.useState call
-  const name = ''
+interface Props {
+  initialName?: string
+}
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    // 🐨 update the name here based on event.target.value
+function Greeting({initialName}: Props) {
+  const [name, setName] = useState(initialName)
+
+  function handleChange({target}: React.ChangeEvent<HTMLInputElement>) {
+    setName(target.value)
   }
 
   return (
@@ -23,7 +26,7 @@ function Greeting() {
 }
 
 function App() {
-  return <Greeting />
+  return <Greeting initialName="Martin" />
 }
 
 export default App
