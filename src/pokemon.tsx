@@ -1,13 +1,14 @@
 import React from 'react'
-import {ErrorBoundary} from 'react-error-boundary'
+import {ErrorBoundary, FallbackProps} from 'react-error-boundary'
+import {Pokemon} from './typings'
 
-const formatDate = date =>
+const formatDate = (date: Date) =>
   `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')} ${String(
     date.getSeconds(),
   ).padStart(2, '0')}.${String(date.getMilliseconds()).padStart(3, '0')}`
 
 // the delay argument is for faking things out a bit
-function fetchPokemon(name, delay = 1500) {
+function fetchPokemon(name: string, delay: string | number = 1500) {
   const pokemonQuery = `
     query PokemonInfo($name: String) {
       pokemon(name: $name) {
@@ -31,8 +32,8 @@ function fetchPokemon(name, delay = 1500) {
       // learn more about this API here: https://graphql-pokemon2.vercel.app/
       method: 'POST',
       headers: {
+        delay: delay as string,
         'content-type': 'application/json;charset=UTF-8',
-        delay: delay,
       },
       body: JSON.stringify({
         query: pokemonQuery,
@@ -52,16 +53,16 @@ function fetchPokemon(name, delay = 1500) {
       } else {
         // handle the graphql errors
         const error = {
-          message: data?.errors?.map(e => e.message).join('\n'),
+          message: data?.errors?.map((e: Error) => e.message).join('\n'),
         }
         return Promise.reject(error)
       }
     })
 }
 
-function PokemonInfoFallback({name}) {
+function PokemonInfoFallback({name}: {name: string}) {
   const initialName = React.useRef(name).current
-  const fallbackPokemonData = {
+  const fallbackPokemonData: Pokemon = {
     name: initialName,
     number: 'XXX',
     image: '/img/pokemon/fallback-pokemon.jpg',
@@ -76,7 +77,7 @@ function PokemonInfoFallback({name}) {
   return <PokemonDataView pokemon={fallbackPokemonData} />
 }
 
-function PokemonDataView({pokemon}) {
+function PokemonDataView({pokemon}: {pokemon: Pokemon}) {
   return (
     <div>
       <div className="pokemon-info__img-wrapper">
@@ -109,6 +110,10 @@ function PokemonForm({
   pokemonName: externalPokemonName,
   initialPokemonName = externalPokemonName || '',
   onSubmit,
+}: {
+  pokemonName: string
+  initialPokemonName?: string
+  onSubmit: Function
 }) {
   const [pokemonName, setPokemonName] = React.useState(initialPokemonName)
 
@@ -124,16 +129,16 @@ function PokemonForm({
     }
   }, [externalPokemonName])
 
-  function handleChange(e) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setPokemonName(e.target.value)
   }
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault()
     onSubmit(pokemonName)
   }
 
-  function handleSelect(newPokemonName) {
+  function handleSelect(newPokemonName: string) {
     setPokemonName(newPokemonName)
     onSubmit(newPokemonName)
   }
@@ -184,17 +189,17 @@ function PokemonForm({
   )
 }
 
-function ErrorFallback({error, resetErrorBoundary}) {
+function ErrorFallback({error, resetErrorBoundary}: FallbackProps) {
   return (
     <div role="alert">
       There was an error:{' '}
-      <pre style={{whiteSpace: 'normal'}}>{error.message}</pre>
+      <pre style={{whiteSpace: 'normal'}}>{error?.message}</pre>
       <button onClick={resetErrorBoundary}>Try again</button>
     </div>
   )
 }
 
-function PokemonErrorBoundary(props) {
+function PokemonErrorBoundary(props: unknown) {
   return <ErrorBoundary FallbackComponent={ErrorFallback} {...props} />
 }
 

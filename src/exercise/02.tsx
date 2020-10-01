@@ -12,7 +12,7 @@ function Greeting({initialName = ''}) {
   // The callback should set the `name` in localStorage.
   // 💰 window.localStorage.setItem('name', name)
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setName(event.target.value)
   }
   return (

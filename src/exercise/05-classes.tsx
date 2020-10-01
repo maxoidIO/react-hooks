@@ -7,10 +7,14 @@ import VanillaTilt from 'vanilla-tilt'
 // If you'd rather practice refactoring a class component to a function
 // component with hooks, then go ahead and do this exercise.
 
+type ExtendedHTMLDivElement = HTMLDivElement & {
+  vanillaTilt: {destroy: Function}
+}
+
 class Tilt extends React.Component {
-  tiltRef = React.createRef()
+  tiltRef = React.createRef<ExtendedHTMLDivElement>()
   componentDidMount() {
-    const tiltNode = this.tiltRef.current
+    const tiltNode = this.tiltRef.current as ExtendedHTMLDivElement
     const vanillaTiltOptions = {
       max: 25,
       speed: 400,
@@ -20,7 +24,7 @@ class Tilt extends React.Component {
     VanillaTilt.init(tiltNode, vanillaTiltOptions)
   }
   componentWillUnmount() {
-    this.tiltRef.current.vanillaTilt.destroy()
+    ;(this.tiltRef.current as ExtendedHTMLDivElement).vanillaTilt.destroy()
   }
   render() {
     return (

@@ -1,31 +1,45 @@
 import {graphql} from '@kentcdodds/react-workshop-app/server'
+import {Pokemon} from './typings'
 
 const pokemonApi = graphql.link('https://graphql-pokemon2.vercel.app/')
 
 export const handlers = [
-  pokemonApi.query('PokemonInfo', (req, res, ctx) => {
-    const pokemon = allPokemon[req.variables.name.toLowerCase()]
-    if (pokemon) {
-      return res(ctx.status(200), ctx.data({pokemon}))
-    } else {
-      const pokemonNames = Object.keys(allPokemon)
-      const randomName =
-        pokemonNames[Math.floor(pokemonNames.length * Math.random())]
-      return res(
-        ctx.status(404),
-        ctx.data({
-          errors: [
-            {
-              message: `Unsupported pokemon: "${req.variables.name}". Try "${randomName}"`,
-            },
-          ],
-        }),
-      )
-    }
-  }),
+  pokemonApi.query(
+    'PokemonInfo',
+    (
+      req: {
+        variables: {
+          name: string
+        }
+      },
+      res: Function,
+      ctx: {status: Function; data: Function},
+    ) => {
+      const pokemon = allPokemon[req.variables.name.toLowerCase()]
+      if (pokemon) {
+        return res(ctx.status(200), ctx.data({pokemon}))
+      } else {
+        const pokemonNames = Object.keys(allPokemon)
+        const randomName =
+          pokemonNames[Math.floor(pokemonNames.length * Math.random())]
+        return res(
+          ctx.status(404),
+          ctx.data({
+            errors: [
+              {
+                message: `Unsupported pokemon: "${req.variables.name}". Try "${randomName}"`,
+              },
+            ],
+          }),
+        )
+      }
+    },
+  ),
 ]
 
-const allPokemon = {
+const allPokemon: {
+  [key: string]: Pokemon
+} = {
   pikachu: {
     id: 'UG9rZW1vbjowMjU=',
     number: '025',

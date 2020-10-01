@@ -48,7 +48,7 @@ test('can play a game of tic tac toe', () => {
 
   // prettier-ignore
   expect(
-    JSON.parse(window.localStorage.getItem('squares')),
+    JSON.parse(window.localStorage.getItem('squares') as string),
     'Make sure that the "squares" localStorage item is updated with the JSON.stringified squares',
   ).toEqual([
     'X', 'O', 'X',

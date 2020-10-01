@@ -8,8 +8,8 @@ import React from 'react'
  */
 
 function useLocalStorageState(
-  key,
-  defaultValue = '',
+  key: string, // The key to set in localStorage for this value
+  defaultValue: object | string = '', // The value to use if it is not already in localStorage
   {serialize = JSON.stringify, deserialize = JSON.parse} = {},
 ) {
   const [state, setState] = React.useState(() => {

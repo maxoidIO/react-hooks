@@ -7,7 +7,7 @@ function Greeting() {
   // 💣 delete this variable declaration and replace it with a React.useState call
   const name = ''
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     // 🐨 update the name here based on event.target.value
   }
 

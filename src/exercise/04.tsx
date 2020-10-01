@@ -2,6 +2,7 @@
 // http://localhost:3000/isolated/exercise/04.js
 
 import React from 'react'
+import {Square} from '../typings'
 
 function Board() {
   // 🐨 squares is the state for this component. Add useState for squares
@@ -16,7 +17,7 @@ function Board() {
 
   // This is the function your square click handler will call. `square` should
   // be an index. So if they click the center square, this will be `4`.
-  function selectSquare(square) {
+  function selectSquare(square: number) {
     // 🐨 first, if there's already winner or there's already a value at the
     // given square index (like someone clicked a square that's already been
     // clicked), then return early so we don't make any state changes
@@ -34,7 +35,7 @@ function Board() {
     // 🐨 set the squares to `Array(9).fill(null)`
   }
 
-  function renderSquare(i) {
+  function renderSquare(i: number) {
     return (
       <button className="square" onClick={() => selectSquare(i)}>
         {squares[i]}
@@ -79,7 +80,11 @@ function Game() {
 }
 
 // eslint-disable-next-line no-unused-vars
-function calculateStatus(winner, squares, nextValue) {
+function calculateStatus(
+  winner: string | null,
+  squares: Square[],
+  nextValue: string,
+) {
   return winner
     ? `Winner: ${winner}`
     : squares.every(Boolean)
@@ -88,14 +93,14 @@ function calculateStatus(winner, squares, nextValue) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function calculateNextValue(squares) {
+function calculateNextValue(squares: Square[]) {
   const xSquaresCount = squares.filter(r => r === 'X').length
   const oSquaresCount = squares.filter(r => r === 'O').length
   return oSquaresCount === xSquaresCount ? 'X' : 'O'
 }
 
 // eslint-disable-next-line no-unused-vars
-function calculateWinner(squares) {
+function calculateWinner(squares: Square[]) {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],

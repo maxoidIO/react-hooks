@@ -5,10 +5,12 @@ import App from '../final/05'
 
 test('calls VanillaTilt.init with the root node', () => {
   const {container, unmount} = render(<App />)
-  const tiltRoot = container.querySelector('.tilt-root')
+  const tiltRoot = container.querySelector('.tilt-root') as Element & {
+    vanillaTilt: object
+  }
   expect(tiltRoot).toHaveProperty('vanillaTilt')
 
-  const destroy = jest.spyOn(tiltRoot.vanillaTilt, 'destroy')
+  const destroy = jest.spyOn(tiltRoot.vanillaTilt, 'destroy' as never)
   expect(destroy).toHaveBeenCalledTimes(0)
 
   unmount()
