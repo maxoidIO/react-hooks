@@ -15,4 +15,4 @@ export interface Pokemon {
   fetchedAt?: string
 }
 
-export type Square = string | null
+export type Square = 'X' | 'O' | null
