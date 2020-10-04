@@ -9,24 +9,13 @@ import React, {
   useState,
 } from 'react'
 
-function isValidJSONString(str: string) {
-  try {
-    JSON.parse(str)
-  } catch (e) {
-    return false
-  }
-  return true
-}
-
 function useLocalStorageState<D = unknown>(
   key: string,
   defaultValue?: D,
 ): [D, Dispatch<SetStateAction<D>>] {
-  console.log('parse', window.localStorage.getItem(key))
   const [state, setState] = useState(() => {
     const localStorageVal = window.localStorage.getItem(key)
     if (localStorageVal) {
-      console.log('key', localStorageVal)
       return JSON.parse(localStorageVal as string)
     }
 

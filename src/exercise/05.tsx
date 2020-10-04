@@ -1,35 +1,36 @@
 // useRef and useEffect: DOM interaction
 // http://localhost:3000/isolated/exercise/05.js
 
-import React from 'react'
-// eslint-disable-next-line no-unused-vars
+import React, {useEffect, useRef} from 'react'
 import VanillaTilt from 'vanilla-tilt'
 
+interface VanillaTiltElement {
+  vanillaTilt: {
+    destroy: Function
+  }
+}
+
 function Tilt({children}: {children: React.ReactChild}) {
-  // 🐨 create a ref here with React.useRef()
+  const ref = useRef(null)
 
-  // 🐨 add a `React.useEffect` callback here and use VanillaTilt to make your
-  // div look fancy.
-  // 💰 like this:
-  // const tiltNode = tiltRef.current
-  // VanillaTilt.init(tiltNode, {
-  //   max: 25,
-  //   speed: 400,
-  //   glare: true,
-  //   'max-glare': 0.5,
-  // })
-  //
-  // 💰 Don't forget to return a cleanup function. VanillaTilt.init will add an
-  // object to your DOM node to cleanup:
-  // `return () => tiltNode.vanillaTilt.destroy()`
-  //
-  // 💰 Don't forget to specify your effect's dependencies array! In our case
-  // we know that the tilt node will never change, so make it `[]`. Ask me about
-  // this for a more in depth explanation.
+  useEffect(() => {
+    const tiltEl: VanillaTiltElement | null = ref.current
 
-  // 🐨 add the `ref` prop to the `tilt-root` div here:
+    if (tiltEl) {
+      VanillaTilt.init(tiltEl, {
+        max: 30,
+        speed: 300,
+        glare: true,
+        'max-glare': 0.5,
+      })
+
+      // componentWillUnmount: clear binding
+      return () => tiltEl!.vanillaTilt.destroy()
+    }
+  }, [])
+
   return (
-    <div className="tilt-root">
+    <div className="tilt-root" ref={ref}>
       <div className="tilt-child">{children}</div>
     </div>
   )

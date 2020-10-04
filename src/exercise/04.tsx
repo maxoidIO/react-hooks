@@ -1,7 +1,7 @@
 // useState: tic tac toe
 // http://localhost:3000/isolated/exercise/04.js
 
-import React, {useState} from 'react'
+import React from 'react'
 import {Square} from '../typings'
 import {useLocalStorageState} from '../utils'
 
